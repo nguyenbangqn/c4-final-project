@@ -108,4 +108,17 @@ export class TodosAccess {
 
         return await attachmentUtil.createAttachmentUrl(todoId);
     }
+
+    public async getTodoItem(todoId: string, userId: string) {
+        logger.info(`Get TODO item: ${todoId}`);
+        const params = {
+            TableName: this.todosTable,
+            Key: {
+                todoId,
+                userId
+            }
+        };
+        const result = await this.docClient.get(params).promise();
+        return result.Item as TodoItem;
+    }
 }

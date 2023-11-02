@@ -194,6 +194,27 @@ functions:
           - xray:PutTraceSegments
         Resource: '*'
 
+  # Provide property for setting up CORS, Authorizer, iamRoleStatements
+  GetTodo:
+    handler: src/lambda/http/getTodo.handler
+    events:
+      - http:
+          method: get
+          path: todos/{todoId}
+          cors: true
+          authorizer: Auth
+    iamRoleStatementsInherit: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:GetItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
+      - Effect: Allow
+        Action:
+          - xray:PutTelemetryRecords
+          - xray:PutTraceSegments
+        Resource: '*'
+
 resources:
   Resources:
     # Add necessary AWS resources. You will need at least the following AWS resources

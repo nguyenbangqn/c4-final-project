@@ -35,3 +35,7 @@ export const deleteTodo = async (userId: string, todoId: string) => {
 export const createAttachmentUrl = async (userId: string, todoId: string) => {
     return await todoAccess.createAttachmentUrl(userId, todoId);
 }
+
+export const getTodoItem = async (userId: string, todoId: string) => {
+    return await todoAccess.getTodoItem(userId, todoId);
+}
