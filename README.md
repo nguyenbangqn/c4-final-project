@@ -4,7 +4,7 @@ To implement this project, you need to implement a simple TODO application using
 
 # Functionality of the application
 
-This application will allow creating/removing/updating/fetching TODO items. Each TODO item can optionally have an attachment image. Each user only has access to TODO items that he/she has created.
+This application will allow creating/removing/updating/fetching TODO items/fetching a TODO item. Each TODO item can optionally have an attachment image. Each user only has access to TODO items that he/she has created.
 
 # TODO items
 
@@ -70,6 +70,22 @@ It should return data that looks like this:
       "attachmentUrl": "http://example.com/image.png"
     },
   ]
+}
+```
+* `GetTodo` - should return a TODO by id.
+
+It should return data that looks like this:
+
+```json
+{
+  "item": {
+    "todoId": "123",
+    "createdAt": "2019-07-27T20:01:45.424Z",
+    "name": "Buy milk",
+    "dueDate": "2019-07-29T20:01:45.424Z",
+    "done": false,
+    "attachmentUrl": "http://example.com/image.png"
+  }
 }
 ```
 

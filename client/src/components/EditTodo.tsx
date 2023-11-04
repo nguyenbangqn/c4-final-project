@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Form, Button } from 'semantic-ui-react'
 import Auth from '../auth/Auth'
-import { getUploadUrl, uploadFile } from '../api/todos-api'
+import { getUploadUrl, uploadFile, getTodo } from '../api/todos-api'
 
 enum UploadState {
   NoUpload,
@@ -19,7 +19,12 @@ interface EditTodoProps {
 }
 
 interface EditTodoState {
-  file: any
+  todoId: string,
+  name: string,
+  done: boolean,
+  dueDate: string,
+  attachmentUrl?: string,
+  file: any,
   uploadState: UploadState
 }
 
@@ -28,6 +33,11 @@ export class EditTodo extends React.PureComponent<
   EditTodoState
 > {
   state: EditTodoState = {
+    todoId: '',
+    name: '',
+    done: false,
+    dueDate: '',
+    attachmentUrl: undefined,
     file: undefined,
     uploadState: UploadState.NoUpload
   }
@@ -70,12 +80,38 @@ export class EditTodo extends React.PureComponent<
     })
   }
 
+  async componentDidMount() {
+    try {
+      const data = await getTodo(
+        this.props.auth.getIdToken(),
+        this.props.match.params.todoId
+      )
+      console.log(data)
+      this.setState({
+        todoId: data.todoId,
+        name: data.name,
+        done: data.done,
+        dueDate: data.dueDate,
+        attachmentUrl: data.attachmentUrl
+      })
+    } catch (e) {
+      alert(`Failed to fetch todo: ${(e as Error).message}`)
+    }
+  }
+
   render() {
     return (
       <div>
-        <h1>Upload new image</h1>
+        <h1>Todo Detail</h1>
 
         <Form onSubmit={this.handleSubmit}>
+          <Form.Field>
+            <label>Todo Name</label>
+            <Form.Input
+              name='name' 
+              value={this.state.name} />
+          </Form.Field>
+
           <Form.Field>
             <label>File</label>
             <input
